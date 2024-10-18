@@ -1,0 +1,12 @@
+{
+    "workbench.editor.alwaysShowEditorActions": true,
+    "workbench.editor.autoLockGroups": {
+        "hediet.vscode-drawio-text": true,
+        "default": true,
+        "workbench.editor.chatSession": true,
+        "workbench.editorinputs.searchEditorInput": true,
+        "workbench.editors.gettingStartedInput": true,
+        "workbench.input.interactive": true
+    },
+    "workbench.editor.centeredLayoutFixedWidth": false
+}
