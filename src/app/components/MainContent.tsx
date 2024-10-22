@@ -6,6 +6,7 @@ import { Dashboard } from "./sidebar/Dashboard";
 import Chat from "./sidebar/Chat";
 import Transfer from "./sidebar/Transfer";
 import { useStoreChat } from "../hooks/store";
+import { GeneralChannels } from "./sidebar/GeneralChats";
 
 interface MainContentProps {
     userInfo: any;
@@ -42,7 +43,7 @@ const MainContent: React.FC<MainContentProps> = ({
             {selectedSection === "dashboard" && <Dashboard setSection={setSelectedSection} />}
             {selectedSection === "chat" && <Chat setSection={setSelectedSection} />}
             {selectedSection === "inbox" && <Inbox setSection={setSelectedSection} />}
-            {selectedSection === "channels" && <Channels setSection={setSelectedSection} />}
+            {selectedSection === "your channels" && <Channels setSection={setSelectedSection} />}
             {selectedSection === "create channel" && <CreateChannel setSection={setSelectedSection} />}
             {selectedSection === "transfer" && (
                 <Transfer
@@ -60,6 +61,7 @@ const MainContent: React.FC<MainContentProps> = ({
                     transactionHash={transactionHash}
                 />
             )}
+            {selectedSection === "general chats" && <GeneralChannels setSection={setSelectedSection} />}
         </main>
     );
 };

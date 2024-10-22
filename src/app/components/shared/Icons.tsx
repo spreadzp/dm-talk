@@ -332,6 +332,43 @@ export const ChromeIcon = () => (
     </svg>
 );
 
+const Icon = ({ fill, paths }: { fill: string, paths: string[] }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6">
+        {paths.map((path: string, index: number) => (
+            <path key={index} fill={fill} d={path} />
+        ))}
+    </svg>
+);
+export const BNBChainIcon = () => (
+    <Icon
+        fill="#F3BA2F"
+        paths={[
+            "M12 2l3.39 3.39L12 8.77l-3.39-3.38L12 2z",
+            "M2 12l3.39-3.39L8.77 12l-3.38 3.39L2 12z",
+            "M12 15.23l3.39 3.38L12 22l-3.39-3.39L12 15.23z",
+            "M15.23 12l3.38 3.39L22 12l-3.39-3.39L15.23 12z",
+            "M12 8.77L15.23 12 12 15.23 8.77 12 12 8.77z"
+        ]}
+    />
+);
+export const ETHChainIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6">
+        <path fill="#627EEA" d="M12 2l6 11-6 4-6-4 6-11z" />
+        <path fill="#627EEA" d="M12 15l6 4-6 3-6-3 6-4z" />
+    </svg>
+);
+export const AVAXChainIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6">
+        <circle fill="#E84142" cx="12" cy="12" r="10" />
+        <path fill="white" d="M12 4.5l4.5 9H7.5l4.5-9zm0 5l1.5 3h-3l1.5-3z" />
+    </svg>
+);
+export const TronChainIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6">
+        <path fill="#EF0027" d="M12 2l9 6-9 14L3 8l9-6z" />
+        <path fill="white" d="M12 3.5l7.5 5L12 20.5 4.5 8.5 12 3.5z" />
+    </svg>
+);
 
 
 export const getIconByName = (name: string) => {
@@ -357,6 +394,10 @@ export const getIconByName = (name: string) => {
         Chrome: ChromeIcon,
         Chat: ChatIcon,
         Admin: AdminIcon,
+        BNBChain: BNBChainIcon,
+        ETHChain: ETHChainIcon,
+        AVAXChain: AVAXChainIcon,
+        TronChain: TronChainIcon,
         //ModernTalking: ModernTalkingIcon,
 
 

@@ -1,14 +1,15 @@
 {
-  "name": "dm-talk",
+  "name": "chain-messenger",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run db-generate && next build",
     "start": "next start",
     "lint": "next lint",
     "mongo-up": "docker compose up",
     "mongo-down": "docker compose down",
+    "validate": "prisma validate && prisma format",
     "db-generate": "prisma generate",
     "db-pull": "prisma db pull --force",
     "db-push": "prisma db push"

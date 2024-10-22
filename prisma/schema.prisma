@@ -8,46 +8,54 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId  // MongoDB ObjectId
-  senderAddress String    // User's address
-  avatar        String    // URL to the avatar image
-  userName      String    // User's name
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId // MongoDB ObjectId
+  senderAddress String // User's address
+  avatar        String // URL to the avatar image
+  userName      String // User's name
   messages      Message[] // Relation to the Message model (one-to-many)
   userChats     UserChats[] // Relation to the UserChats model (one-to-many)
 }
 
 model Message {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId  // MongoDB ObjectId
-  date          DateTime  // Timestamp for the message
-  message       String    // Message content
-  typeMessage   String    // Type of message (e.g., "text")
-  userId        String    @db.ObjectId  // ObjectId reference to User
-  user          User      @relation(fields: [userId], references: [id]) // Relation to User
-  chatId        String    @db.ObjectId  // ObjectId reference to Chat
-  chat          Chat      @relation(fields: [chatId], references: [id]) // Relation to Chat
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId // MongoDB ObjectId
+  date        DateTime // Timestamp for the message
+  message     String // Message content
+  typeMessage String // Type of message (e.g., "text")
+  userId      String   @db.ObjectId // ObjectId reference to User
+  user        User     @relation(fields: [userId], references: [id]) // Relation to User
+  chatId      String   @db.ObjectId // ObjectId reference to Chat
+  chat        Chat     @relation(fields: [chatId], references: [id]) // Relation to Chat
 }
 
 model Chat {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId  // MongoDB ObjectId
-  chatId        String    // chatId value from userChats (e.g., 0x123abc)
-  messages      Message[] // Relation to the Message model (one-to-many)
-  userChatsId   String    @db.ObjectId  // ObjectId reference to UserChats
-  userChats     UserChats @relation(fields: [userChatsId], references: [id]) // Relation to UserChats
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId // MongoDB ObjectId
+  chatId      String // chatId value from userChats (e.g., 0x123abc)
+  url         String
+  name        String
+  type        ChatType  @default(Private)
+  messages    Message[] // Relation to the Message model (one-to-many)
+  userChatsId String    @db.ObjectId // ObjectId reference to UserChats
+  userChats   UserChats @relation(fields: [userChatsId], references: [id]) // Relation to UserChats
 }
 
 model UserChats {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId  // MongoDB ObjectId
-  userId        String    @db.ObjectId  // ObjectId reference to User
-  user          User      @relation(fields: [userId], references: [id]) // Relation to User
-  chains        Chain[]   // Relation to the Chain model (one-to-many)
-  chats         Chat[]    // Relation to the Chat model (one-to-many)
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId // MongoDB ObjectId
+  userId String  @db.ObjectId // ObjectId reference to User
+  user   User    @relation(fields: [userId], references: [id]) // Relation to User
+  chains Chain[] // Relation to the Chain model (one-to-many)
+  chats  Chat[] // Relation to the Chat model (one-to-many)
 }
 
 model Chain {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId  // MongoDB ObjectId
-  chainId       String     // Chain ID
-  name          String     // Chain name
-  avatar        String     // URL to the avatar image
-  userChatsId   String     @db.ObjectId  // ObjectId reference to UserChats
-  userChats     UserChats  @relation(fields: [userChatsId], references: [id]) // Relation to UserChats
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId // MongoDB ObjectId
+  chainId     String // Chain ID
+  name        String // Chain name
+  avatar      String // URL to the avatar image
+  userChatsId String    @db.ObjectId // ObjectId reference to UserChats
+  userChats   UserChats @relation(fields: [userChatsId], references: [id]) // Relation to UserChats
+}
+
+enum ChatType {
+  Private
+  General
 }

@@ -1,7 +1,7 @@
 "use client";
 
 // Particle imports
-import { bscTestnet, kakarotSepolia } from "@particle-network/authkit/chains"; // Chains are imported here
+import { bscTestnet, mainnet, vechain } from "@particle-network/authkit/chains"; // Chains are imported here
 import { AuthType } from "@particle-network/auth-core";
 import {
   AuthCoreContextProvider,
@@ -26,7 +26,7 @@ export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
         themeType: "dark",
 
         // List the chains you want to include
-        chains: [bscTestnet, kakarotSepolia],
+        chains: [bscTestnet, mainnet, vechain],
 
         // Optionally, switches the embedded wallet modal to reflect a smart account
         erc4337: {

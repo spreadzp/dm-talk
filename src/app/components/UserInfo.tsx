@@ -1,5 +1,6 @@
 import React from "react";
 import { truncateAddress } from "../utils/utils";
+import Image from "next/image";
 
 interface UserInfoProps {
     userInfo: any;

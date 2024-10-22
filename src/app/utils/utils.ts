@@ -1,5 +1,8 @@
 
 // Utility function to format the balance to 6 decimal places
+
+import { ethers } from "ethers";
+
 // This is more accurate than using .toFixed() because it does not rount it
 export const formatBalance = (balanceInEther: string): string => {
   const [integerPart, decimalPart] = balanceInEther.split(".");
@@ -18,4 +21,21 @@ export function rankAddresses(add1: string, add2: string): string {
   } else {
     return add2 + "_" + add1;
   }
-} 
+}
+
+export function createHashFromString(inputString: string) {
+  const buffByteLike = fromStringToHash(inputString);
+  const mnemonic = ethers.Mnemonic.entropyToPhrase(buffByteLike);
+  try {
+    const hash = ethers.Wallet.fromPhrase(mnemonic);
+    return hash.address;
+  } catch (error) {
+    console.error("Error creating hash:", error);
+    return null;
+  }
+}
+
+export function fromStringToHash(inputString: string) {
+  const buffByteLike = ethers.id(inputString);
+  return buffByteLike;
+}

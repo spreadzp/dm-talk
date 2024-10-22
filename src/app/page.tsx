@@ -15,7 +15,7 @@ import {
 } from "@particle-network/aa";
 import { ethers, type Eip1193Provider } from "ethers";
 
-import { bscTestnet } from "@particle-network/authkit/chains"; // Chains are imported here
+import { bscTestnet, mainnet, vechain } from "@particle-network/authkit/chains"; // Chains are imported here
 
 import Sidebar from "./components/sidebar/Sidebar";
 import MainContent from "./components/MainContent";
@@ -54,7 +54,7 @@ const Home: NextPage = () => {
         SIMPLE: [
           {
             version: "2.0.0",
-            chainIds: [bscTestnet.id],
+            chainIds: [bscTestnet.id, mainnet.id, vechain.id],
           },
         ],
       },
@@ -83,6 +83,7 @@ const Home: NextPage = () => {
   useEffect(() => {
 
     if (userInfo) {
+      console.log("🚀 ~ useEffect ~ userInfo:", userInfo)
       fetchBalance();
     }
   }, [userInfo]);
@@ -119,7 +120,7 @@ const Home: NextPage = () => {
     const tx = {
       to: recipientAddress,
       value: ethers.parseEther("0.001"),
-      data: "0x", // data is needed only when interacting with smart contracts. 0x equals to zero and it's here for demonstration only
+      data: "0x",
     };
 
     try {

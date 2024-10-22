@@ -1,5 +1,6 @@
 'use server';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, ChatType } from '@prisma/client';
+import { getChainName } from '../components/shared/chainNames';
 
 const prisma = new PrismaClient();
 
@@ -42,7 +43,43 @@ export async function createUser(userData: { senderAddress: string; avatar: stri
     return newUser;
 }
 
-export async function createUserChat(userAddress: string, chainId: string, chatIds: string[]) {
+export async function createUserChat(userAddress: string, chainId: string, chatId: string, type: ChatType) {
+    const user = await prisma.user.findFirst({
+        where: { senderAddress: userAddress },
+    });
+
+    if (!user) {
+        throw new Error(`User with address ${userAddress} not found`);
+    }
+    const chainData = getChainName(chainId);
+    const avatarUrl = `https://raw.githubusercontent.com/spreadzp/icon-assets/main/assets/chains/${chainData.coinName}/${chainData.coinName}.png`
+
+    const userChats = await prisma.userChats.create({
+        data: {
+            user: { connect: { id: user.id } },
+            chains: {
+                create: {
+                    chainId: chainId,
+                    name: chainData.name,
+                    avatar: avatarUrl,
+                },
+            },
+        },
+    });
+    await prisma.chat.create({
+        data: {
+            chatId: chatId,
+            url: "",
+            name: "",
+            type,
+            userChats: { connect: { id: userChats.id } },
+        },
+    });
+
+    return userChats;
+}
+
+export async function createGeneralChat(userAddress: string, chatId: string, url: string, name: string, type: ChatType) {
     const user = await prisma.user.findFirst({
         where: { senderAddress: userAddress },
     });
@@ -54,49 +91,24 @@ export async function createUserChat(userAddress: string, chainId: string, chatI
     const userChats = await prisma.userChats.create({
         data: {
             user: { connect: { id: user.id } },
-            chains: {
-                create: {
-                    chainId: chainId,
-                    name: `Chain ${chainId}`, // Replace with actual name
-                    avatar: "defaultAvatar", // Replace with actual avatar
-                },
-            },
+
         },
     });
-
-    for (const chatId of chatIds) {
-        await prisma.chat.create({
-            data: {
-                chatId: chatId,
-                userChats: { connect: { id: userChats.id } },
-            },
-        });
-    }
+    await prisma.chat.create({
+        data: {
+            chatId,
+            url,
+            type,
+            name,
+            userChats: { connect: { id: userChats.id } },
+        },
+    })
 
     return userChats;
 }
 
 export async function getUserChatsByUserAddress(userAddress: string) {
-    const chats = await prisma.chat.findMany({
-        where: {
-            OR: [
-                { chatId: { startsWith: `${userAddress}_` } },
-                { chatId: { endsWith: `_${userAddress}` } },
-            ],
-        },
-        include: {
-            userChats: {
-                include: {
-                    chains: true,
-                    chats: {
-                        include: {
-                            messages: true,
-                        },
-                    },
-                },
-            },
-        }
-    });
+    const chats = await getChatsWithUser(userAddress);
 
     // Transform the data into the desired format
     const transformedChats = chats.map(chat => {
@@ -106,6 +118,7 @@ export async function getUserChatsByUserAddress(userAddress: string) {
         return {
             chatId: chat.chatId,
             chainId: chain.chainId,
+            chainName: chain.name,
             avatar: chain.avatar,
             messages: messages.length,
         };
@@ -142,22 +155,6 @@ export async function deleteUserChatsByUserAddress(userAddress: string) {
     return userChats;
 }
 
-export async function createChat(chatId: string, userChatsId: string, chatData: any) {
-    return await prisma.chat.create({
-        data: {
-            chatId: chatId,
-            userChats: { connect: { id: userChatsId } },
-            messages: {
-                create: {
-                    date: chatData.date,
-                    message: chatData.message,
-                    typeMessage: chatData.typeMessage,
-                    user: { connect: { id: chatData.userId } },
-                },
-            },
-        },
-    });
-}
 
 export async function getChatByChatId(chatId: string) {
     return await prisma.chat.findFirst({
@@ -209,22 +206,30 @@ export async function deleteMessageById(id: string) {
 }
 
 export async function getChatsWithUser(userAddress: string) {
-    const user = await prisma.user.findFirst({
-        where: { senderAddress: userAddress },
+    return await prisma.chat.findMany({
+        where: {
+            OR: [
+                { chatId: { startsWith: `${userAddress}_` } },
+                { chatId: { endsWith: `_${userAddress}` } },
+            ],
+        },
         include: {
             userChats: {
                 include: {
-                    chats: true,
+                    chains: true,
+                    chats: {
+                        include: {
+                            messages: {
+                                include: {
+                                    user: true,
+                                },
+                            },
+                        },
+                    },
                 },
             },
-        },
+        }
     });
-
-    if (!user) {
-        throw new Error(`User with address ${userAddress} not found`);
-    }
-
-    return user.userChats.flatMap(userChats => userChats.chats);
 }
 
 export async function createOrUpdateUserWithChat(userAddress: string, chainId: string, chatId: string) {
@@ -280,7 +285,129 @@ export async function createOrUpdateUserWithChat(userAddress: string, chainId: s
     await prisma.chat.create({
         data: {
             chatId: chatId,
+            url: "",
+            name: "",
+            type: ChatType.Private,
             userChats: { connect: { id: userChats?.id } },
         },
     });
+}
+
+export async function inboxChatsByUserAddress(userAddress: string) {
+    // Fetch all chats where the user is involved
+    const chats = await getChatsWithUser(userAddress);
+
+    // Filter chats where the last message is not from the user
+    const filteredChats = chats.filter(chat => {
+        const lastMessage = chat.userChats.chats[0].messages.reduce((prev, current) =>
+            (prev.date > current.date) ? prev : current
+        );
+        return lastMessage.user.senderAddress !== userAddress;
+    });
+
+    // Transform the data into the desired format
+    const transformedChats = filteredChats.map(chat => {
+        const chain = chat.userChats.chains[0]; // Assuming there's always at least one chain
+        const lastMessage = chat.userChats.chats[0].messages.reduce((prev, current) =>
+            (prev.date > current.date) ? prev : current
+        );
+
+        return {
+            chatId: chat.chatId,
+            chainId: chain.chainId,
+            chainName: chain.name,
+            avatar: chain.avatar,
+            dateMessage: lastMessage.date,
+        };
+    });
+
+    return transformedChats;
+}
+
+export async function getGeneralChatsWithUser(userAccount: string) {
+    try {
+        // Find the UserChats associated with the userAccount
+        const userChats = await prisma.userChats.findMany({
+            where: {
+                user: {
+                    senderAddress: userAccount,
+                },
+            },
+            include: {
+                chats: true, // Include the chats associated with the UserChats
+            },
+        });
+
+        // Filter the chats to include only those with type 'General'
+        const generalChats = userChats
+            .flatMap(userChat => userChat.chats)
+            .filter(chat => chat.type === ChatType.General);
+
+        return generalChats;
+    } catch (error) {
+        console.error("Error fetching general chats:", error);
+        throw error;
+    }
+}
+
+export async function getGeneralChats() {
+    const chats = await prisma.chat.findMany({
+        where: {
+            type: ChatType.General,
+        },
+        include: {
+            messages: true
+        },
+    });
+
+    return chats.map((chat) => {
+        return {
+            name: chat.name,
+            url: chat.url,
+            type: chat.type,
+            messages: chat.messages.length,
+            chatId: chat.chatId,
+        };
+    });
+}
+
+export async function addUserToChat(userAddress: string, chatId: string) {
+    const user = await prisma.user.findFirst({
+        where: { senderAddress: userAddress },
+    });
+
+    if (!user) {
+        throw new Error(`User with address ${userAddress} not found`);
+    }
+
+    const chat = await prisma.chat.findFirst({
+        where: { chatId: chatId },
+        include: {
+            userChats: true,
+        },
+    });
+
+    if (!chat) {
+        throw new Error(`Chat with chatId ${chatId} not found`);
+    }
+
+    const userChats = await prisma.userChats.findFirst({
+        where: {
+            userId: user.id,
+            chats: {
+                some: {
+                    id: chat.id,
+                },
+            },
+        },
+    });
+
+    if (!userChats) {
+        await prisma.userChats.create({
+            data: {
+                user: { connect: { id: user.id } },
+                chats: { connect: { id: chat.id } },
+            },
+        });
+    }
 }

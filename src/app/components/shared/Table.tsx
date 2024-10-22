@@ -4,6 +4,8 @@ import { getIconByName } from './Icons';
 import WalletAddressDisplay from './WalletAddressDisplay';
 import { disabledHeaderTableNames } from './disabledHeaderTableNames';
 import Spinner from './Spinner';
+import Image from 'next/image';
+import { getChainName } from './chainNames';
 
 type TableProps = {
     data: any[];
@@ -49,27 +51,38 @@ const Table: React.FC<TableProps> = ({ data, onJoinClick, buttonLabel }) => {
         }
     };
 
-    const renderValueByHeader = (header: string, value: any) => {
-        if (header === 'typeMessage') {
-            if (value.includes('text')) {
+    const renderValueByHeader = (header: string, value: any, item: any) => {
+        if (header === 'url') {
+            if (value.includes('https://www.youtube.com')) {
                 return (
-                    <a href={value} target="_blank" rel="noopener noreferrer" title={value}>
-                        {getIconByName('YouTube')}
-                    </a>
+                    <div className="flex items-center justify-center  space-x-4">
+                        <a href={value} target="_blank" rel="noopener noreferrer" title={value}>
+                            {getIconByName('YouTube')}
+                        </a>
+                    </div>
+                );
+            } else if (value !== '') {
+                return (
+                    <div className="flex items-center justify-center  space-x-4">
+                        <a href={value} target="_blank" rel="noopener noreferrer" title={value}>
+                            {getIconByName('Chrome')}
+                        </a>
+                    </div>
                 );
             } else {
-                return (
-                    <a href={value} target="_blank" rel="noopener noreferrer" title={value}>
-                        {getIconByName('Chrome')}
-                    </a>
-                );
+                return null;
             }
         }
         if (header === 'hashResource' || header === 'address' || header === 'chatId' || header === 'senderAddress') {
             return (<WalletAddressDisplay address={value} />)
         }
+        if (header === 'avatar' && item) {
+            return <div className="flex items-center justify-center  space-x-4">
+                <Image src={item.avatar} alt="avatar" width={40} height={40} />
+            </div>
+        }
 
-        if (header === 'date') {
+        if (['date', 'dateMessage'].includes(header)) {
             const dateString = value instanceof Date ? value.toLocaleDateString() : value;
             return (<div className="text-red-500">{dateString}</div>)
         }
@@ -87,7 +100,7 @@ const Table: React.FC<TableProps> = ({ data, onJoinClick, buttonLabel }) => {
                 className="bg-blue-500 hover:bg-[hsl(187,100%,68%)] text-yellow-500 font-bold py-2 px-4 rounded"
                 onClick={() => onJoinClick(item)}
             >
-                {value || 'Buy'}
+                {value || 'Join'}
             </button>);
         }
 
@@ -111,7 +124,7 @@ const Table: React.FC<TableProps> = ({ data, onJoinClick, buttonLabel }) => {
                         <tr key={index} className="text-sm">
                             {headers.map((header, headerIndex) => (
                                 <td key={headerIndex} className="border px-4 py-2 text-center">
-                                    {renderValueByHeader(header, item[header])}
+                                    {renderValueByHeader(header, item[header], item)}
                                 </td>
                             ))}
                             {onJoinClick && (
