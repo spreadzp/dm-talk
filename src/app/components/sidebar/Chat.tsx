@@ -46,7 +46,7 @@ const Chat: React.FC<ChatProps> = ({ setSection }) => {
                 setAddressPartner('');
             }
         }
-    }, [selectedChat])
+    }, [selectedChat, activeAccount]);
     const fetchMessages = async (chatId: string) => {
         debugger
         console.log("🚀 ~ fetchMessages ~ chatId:", chatId)

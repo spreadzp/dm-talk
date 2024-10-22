@@ -31,3 +31,352 @@ body {
     text-wrap: balance;
   }
 }
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+  }
+}
+
+.item-nftId {
+  margin-left: 10px;
+}
+.item-description {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: calc(
+    100% + 10px
+  ); /* Position the description to the right of the list item */
+  width: 200px; /* Adjust width as needed */
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.dropdown-list li:hover .item-description {
+  display: block;
+  top: 0;
+  left: 100%; /* Adjust the position to be next to the hovered item */
+}
+
+.item-title {
+  margin-left: 5px;
+}
+/* background: url("cosmos-stars.jpg") no-repeat center center fixed; */
+.landing {
+  text-align: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.title {
+  color: white;
+  font-size: 3em;
+  margin-top: 20px;
+}
+
+/* Poster.css */
+.poster {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.poster-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.poster-image-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.poster-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.poster-description {
+  margin-top: 20px;
+}
+
+.text-left {
+  text-align: left;
+}
+
+
+.slider-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+
+.slider-button:hover {
+  transform: translateY(-50%) scale(2);
+}
+
+.feature-slider {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.slider-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  filter: blur(10px); /* Initial foggy state */
+  transition: opacity 0.5s ease-in-out, filter 1.5s ease-in-out;
+}
+
+.slider-item.active {
+  position: relative;
+  opacity: 1;
+  filter: blur(0); /* Fully clear state */
+}
+
+@media (max-width: 768px) {
+  .poster-content {
+      padding: 10px;
+  }
+
+  .poster-image {
+      width: 100%;
+      height: auto;
+  }
+
+  .poster-description {
+      margin-top: 10px;
+  }
+
+  .text-xl {
+      font-size: 1.25rem;
+  }
+
+  .text-base {
+      font-size: 1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .poster-content {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+  }
+
+  .poster-image-container {
+      order: 2;
+      flex: 1;
+      margin-left: 20px;
+  }
+
+  .poster-description {
+      order: 1;
+      flex: 1;
+      margin-top: 0;
+  }
+
+  .text-xl {
+      font-size: 1.5rem;
+  }
+
+  .text-base {
+      font-size: 1.125rem;
+  }
+}
+
+/* Collaboration.css */
+.collaboration {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);  
+}
+
+.collaboration-left {
+  flex: 0 0 70%; /* flex-grow, flex-shrink, flex-basis */
+  margin-right: 20px; 
+}
+
+.collaboration-right {
+  flex: 0 0 30%; /* flex-grow, flex-shrink, flex-basis */
+}
+
+.collaboration-left h2 {
+  margin-bottom: 10px;
+}
+
+.collaboration-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.collaboration-form input,
+.collaboration-form textarea {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.collaboration-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.collaboration-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Statistic.css */
+.statistic {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  margin: 20px 0;
+}
+
+/* Additional styles for the Statistic component */
+.statistic.p-4 {
+  padding: 1rem; /* 16px */
+}
+
+.statistic.bg-white {
+  background-color: white;
+}
+
+.statistic.bg-opacity-20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.statistic.text-white {
+  color: white;
+}
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .collaboration {
+    flex-direction: row;
+  }
+
+  .collaboration-left {
+    flex: 0 0 70%;
+    margin-right: 20px;
+    margin-bottom: 0;
+  }
+
+  .collaboration-right {
+    flex: 0 0 30%;
+  }
+}
+.banner {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 20px;
+  animation: enlarge 1000ms alternate infinite;
+  transform: scale(pow(0.9, var(--scale, 0)));
+}
+
+.hover-zoom {
+  transition: transform 0.2s; /* Animation */
+}
+
+.hover-zoom:hover {
+  transform: scale(2); /* (200% zoom) */
+}
+
+.hover-gradient {
+  transition: color 1s; /* Animation */
+}
+
+.hover-gradient:hover {
+  animation: gradientWave 1s linear;
+}
+
+.glowing-icon {
+  animation: pulse 5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(2);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+.marketplace-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-white {
+  color: white;
+}
+
+@keyframes gradientWave {
+  0% { 
+      color: white; 
+      transform: scale(1); /* Initial scale */
+  }
+  20% { 
+      color: hsl(240, 100%, 50%); 
+      transform: scale(1.2); /* Zoom in */
+  }
+  40% { 
+      color: hsl(220, 100%, 50%); 
+      transform: scale(1.3); /* Maintain zoom */
+  }
+  60% { 
+      color: hsl(200, 100%, 50%); 
+      transform: scale(1.4); /* Maintain zoom */
+  }
+  80% { 
+      color: hsl(180, 100%, 50%); 
+      transform: scale(1.2); /* Maintain zoom */
+  }
+  100% { 
+      color: hsl(187, 100%, 68%); 
+      transform: scale(1); /* Return to original scale */
+  }
+}
+
+
+@property --scale {
+  syntax: "<number-";
+  inherits: true;
+  initial-value: 1;
+}
+
+@keyframes enlarge {
+  0% {
+    --scale: 0;
+  }
+  100% {
+    --scale: 0.9;
+  }
+}

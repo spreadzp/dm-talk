@@ -24,10 +24,11 @@ const UserInfo: React.FC<UserInfoProps> = ({
                 <h2 className="text-lg font-semibold mb-2 text-white mr-2">
                     Name: {userInfo?.name}
                 </h2>
-                <img
+                <Image
                     src={userInfo?.avatar}
                     alt="User Avatar"
                     className="w-10 h-10 rounded-full"
+                    width={40} height={40}
                 />
             </div>
             <h2 className="text-lg font-semibold mb-2 text-white">

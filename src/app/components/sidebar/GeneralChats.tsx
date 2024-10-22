@@ -11,13 +11,11 @@ interface ChannelsProps {
 
 export const GeneralChannels: React.FC<ChannelsProps> = ({ setSection }) => {
     const { setSelectedChat, activeAccount } = useStoreChat();
-
     const [generalChats, setGeneralChats] = useState<any[]>([]);
     const [loadingGeneral, setLoadingGeneral] = useState<boolean>(true);
 
     useEffect(() => {
         setLoadingGeneral(true);
-
         getGeneralChats().then((chats) => {
             setGeneralChats(chats);
             setLoadingGeneral(false);
@@ -26,7 +24,7 @@ export const GeneralChannels: React.FC<ChannelsProps> = ({ setSection }) => {
 
     const handleJoin = async (item: any) => {
         try {
-            await addUserToChat(activeAccount, item.chatId);
+            await addUserToChat(activeAccount as string, item.chatId);
             setSelectedChat(item);
             setSection("chat");
         } catch (error) {
@@ -53,7 +51,7 @@ export const GeneralChannels: React.FC<ChannelsProps> = ({ setSection }) => {
                     <Table data={generalChats} onJoinClick={(item) => handleJoin(item)} buttonLabel="Join" />
 
                 </div> :
-                    <p>No general channels found</p>}
+                    <div>No general channels found</div>}
         </div>
     );
 };

@@ -53,7 +53,7 @@ export const Channels: React.FC<ChannelsProps> = ({ setSection }) => {
                     />
                     <Table data={chats} onJoinClick={(item) => handleJoin(item)} buttonLabel="Join" />
                 </div> :
-                    <p>No private channels found</p>}
+                    <div>No private channels found</div>}
             <br />
             {loadingGeneral ? <Spinner text="Loading general channels..." /> :
                 generalChats.length > 0 ? <div>
@@ -65,7 +65,7 @@ export const Channels: React.FC<ChannelsProps> = ({ setSection }) => {
                     <Table data={generalChats} onJoinClick={(item) => handleJoin(item)} buttonLabel="Join" />
 
                 </div> :
-                    <p>No general channels found</p>}
+                    <div>No general channels found</div>}
         </div>
     );
 };

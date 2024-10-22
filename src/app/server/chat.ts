@@ -411,3 +411,55 @@ export async function addUserToChat(userAddress: string, chatId: string) {
         });
     }
 }
+
+export async function getChatStatistics() {
+    const userChats = await prisma.userChats.findMany({
+        where: {
+        },
+        include: {
+            chats: {
+                include: {
+                    messages: true,
+                }
+            },
+            user: true
+        },
+    });
+
+    // Filter the chats to include only those with type 'General'
+    const generalChats = userChats
+        .flatMap(userChat => userChat.chats)
+        .filter(chat => chat.type === ChatType.General);
+
+    const privateChats = userChats
+        .flatMap(userChat => userChat.chats)
+        .filter(chat => chat.type === ChatType.Private);
+
+    let uniqueUsersInPrivateChats = new Set();
+    privateChats.map((chat) => {
+        chat.messages.forEach((message) => {
+            uniqueUsersInPrivateChats.add(message.userId);
+        })
+
+    })
+    const uniqueUsers = new Set();
+    generalChats.map((chat) => {
+        chat.messages.forEach((message) => {
+            uniqueUsers.add(message.userId);
+        })
+        //const uniqueUsers = new Set(chat.userChatsId);
+
+    })
+    const generalChatStats = {
+        type: ChatType.General,
+        members: uniqueUsers.size,
+        messages: generalChats.reduce((sum, chat) => sum + chat.messages.length, 0),
+    }
+    const privateChatStats = {
+        type: ChatType.Private,
+        members: uniqueUsersInPrivateChats.size,
+        messages: privateChats.reduce((sum, chat) => sum + chat.messages.length, 0),
+    }
+
+    return [privateChatStats, generalChatStats];
+}

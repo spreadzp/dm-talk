@@ -21,14 +21,14 @@ import Sidebar from "./components/sidebar/Sidebar";
 import MainContent from "./components/MainContent";
 
 // Import the utility functions
-import { formatBalance, truncateAddress } from "./utils/utils";
+import { formatBalance } from "./utils/utils";
 import { useStoreChat } from "./hooks/store";
 import { getOrCreateUser } from "./server/chat";
 import Spinner from "./components/shared/Spinner";
 
 const Home: NextPage = () => {
   // Hooks to manage logins, data display, and transactions
-  const { connect, disconnect, connectionStatus, connected } = useConnect();
+  const { connectionStatus } = useConnect();
   const { provider, chainInfo } = useEthereum();
   const { userInfo } = useAuthCore();
   const { setActiveAccount, setChainId, setSelectedSection, selectedSection, setActiveUser } = useStoreChat()
