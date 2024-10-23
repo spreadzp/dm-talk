@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createHashFromString, rankAddresses } from "@/app/utils/utils";
+import { createHashFromString, rankAddresses, reworkYouTubeUrl } from "@/app/utils/utils";
 import { createGeneralChat, createUserChat, getChatByChatId } from "@/app/server/chat";
 import { useStoreChat } from "@/app/hooks/store";
 import Title, { TitleEffect, TitleSize } from "../shared/Title";
@@ -18,7 +18,7 @@ export const CreateChannel: React.FC<CreateChannelProps> = ({ setSection }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        debugger
         if (chatType === "private") {
             const chatId = rankAddresses(activeAccount as string, inputAddress);
             setChatId(chatId);
@@ -31,15 +31,20 @@ export const CreateChannel: React.FC<CreateChannelProps> = ({ setSection }) => {
             }
             setSelectedChat({ chatId });
         } else {
-            // For general chat, you can generate a unique chatId based on the topic or URL
-            const hashedChatId = createHashFromString(topicUrl) as string;
-            setChatId(hashedChatId);
-            let existingChat = await getChatByChatId(hashedChatId);
-            debugger
-            if (!existingChat && activeAccount) {
-                await createGeneralChat(activeAccount as string, hashedChatId as string, topicUrl, chatTopic, ChatType.General);
+            if (topicUrl && chatTopic) {
+                // For general chat, you can generate a unique chatId based on the topic or URL
+                const hashedChatId = createHashFromString(topicUrl) as string;
+                setChatId(hashedChatId);
+                const normalizedUrl = reworkYouTubeUrl(topicUrl)
+                let existingChat = await getChatByChatId(hashedChatId);
+                if (!existingChat && activeAccount) {
+                    await createGeneralChat(activeAccount as string, hashedChatId as string, normalizedUrl, chatTopic, ChatType.General);
+                }
+                setSelectedChat({ chatId: hashedChatId });
+            } else {
+                alert("Please fill all the fields");
             }
-            setSelectedChat({ chatId: hashedChatId });
+
         }
 
         setSection("chat");
@@ -83,11 +88,11 @@ export const CreateChannel: React.FC<CreateChannelProps> = ({ setSection }) => {
                         onChange={(e) => setInputAddress(e.target.value)}
                     />
                 ) : (
-                    <div>
+                    <div className="mb-4">
                         <input
                             type="text"
                             placeholder="Enter name of the topic"
-                            className="p-2 w-full rounded border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
+                            className="p-2 w-full rounded border border-gray-700 bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 mb-4"
                             value={chatTopic}
                             onChange={(e) => setChatTopic(e.target.value)}
                         />

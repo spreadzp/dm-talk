@@ -452,11 +452,13 @@ export async function getChatStatistics() {
     })
     const generalChatStats = {
         type: ChatType.General,
+        chats: generalChats.length,
         members: uniqueUsers.size,
         messages: generalChats.reduce((sum, chat) => sum + chat.messages.length, 0),
     }
     const privateChatStats = {
         type: ChatType.Private,
+        chats: privateChats.length,
         members: uniqueUsersInPrivateChats.size,
         messages: privateChats.reduce((sum, chat) => sum + chat.messages.length, 0),
     }

@@ -1,44 +1,42 @@
 import { useStoreChat } from "@/app/hooks/store";
-import { deleteMessageById, getChatByChatId, updateChatByChatId } from "@/app/server/chat";
+import { createUserChat, deleteMessageById, getChatByChatId, updateChatByChatId } from "@/app/server/chat";
 import React, { createRef, useState, useEffect } from "react";
 import { ChatList, MessageList, Input, Button } from "react-chat-elements";
 import WalletAddressDisplay from "../shared/WalletAddressDisplay";
 import RemoveMessageModal from "./RemoveMessageModal";
 import { icons } from "./Icons";
+import { rankAddresses } from "@/app/utils/utils";
+import { ChatType } from "@prisma/client";
+import DirectMessageModal from "./DirectMessageModal";
 
 interface ChatProps {
     setSection: (section: string) => void;
 }
 
-interface Message {
-    avatar: string,
-    date: Date;
-    message: string;
-    senderAddress: string;
-    typeMessage: any//"text" | "cypher" | "image" | "video" | "file";
-}
+
 
 const Chat: React.FC<ChatProps> = ({ setSection }) => {
     const inputReference = createRef<any>();
     const messageListReference = createRef<any>();
     const [chatData, setChatData] = useState<any>([]);
     const [inputMessage, setInputMessage] = useState<string>("");
-    const { activeAccount, chatId, selectedChat, activeUser } = useStoreChat();
+    const { activeAccount, chainId, selectedChat, activeUser, setSelectedChat } = useStoreChat();
     const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
-    const [addressPartner, setAddressPartner] = useState('')
+    const [addressPartner, setAddressPartner] = useState('');
     const [selectedMessage, setSelectedMessage] = useState<any | null>(null);
-    const [isValidChat, setIsValidChat] = useState(false)
+    const [isValidChat, setIsValidChat] = useState(false);
+    const [showDmModal, setShowDmModal] = useState(false);
+
     useEffect(() => {
-        console.log('selectedChat :>>', selectedChat)
+        console.log('selectedChat :>>', selectedChat);
         fetchMessages(selectedChat?.chatId as string)
             .then(() => {
-            })
-
+            });
     }, [selectedChat]);
 
     useEffect(() => {
         if (selectedChat) {
-            setIsValidChat(true)
+            setIsValidChat(true);
             const addresses = selectedChat.chatId?.split('_');
             if (addresses && addresses.length > 1) {
                 setAddressPartner(addresses.find((address: string) => address !== activeAccount) as string);
@@ -47,14 +45,15 @@ const Chat: React.FC<ChatProps> = ({ setSection }) => {
             }
         }
     }, [selectedChat, activeAccount]);
+
     const fetchMessages = async (chatId: string) => {
-        debugger
-        console.log("🚀 ~ fetchMessages ~ chatId:", chatId)
+        console.log("🚀 ~ fetchMessages ~ chatId:", chatId);
         if (chatId) {
             const data = await getChatByChatId(chatId);
             setChatData(data);
         }
     }
+
     const handleSendMessage = async () => {
         const ref: any = inputReference.current;
         if (ref && ref.value.trim() !== "") {
@@ -65,7 +64,7 @@ const Chat: React.FC<ChatProps> = ({ setSection }) => {
                 userId: activeUser?.id,
             };
             await updateChatByChatId(selectedChat.chatId as string, newMessage);
-            await fetchMessages(selectedChat.chatId as string)
+            await fetchMessages(selectedChat.chatId as string);
             ref.value = "";
         }
     };
@@ -75,39 +74,84 @@ const Chat: React.FC<ChatProps> = ({ setSection }) => {
             deleteMessageById(selectedMessage.dbId);
             fetchMessages(selectedChat?.chatId as string)
                 .then(() => {
-                })
+                });
         }
     }
+
     const handleRemoveMessage = (message: any) => {
         setSelectedMessage(message);
         setShowRemoveModal(true);
     };
 
+    const handleMessageClick = async (message: any) => {
+        debugger
+        console.log("🚀 ~ handleMessageClick ~ message:", message)
+        console.log("Clicked message address:", message.title);
+        console.log('chatData :>>', chatData)
+        if (message.title !== 'You' && chatData.type !== 'Private') {
+            setSelectedMessage(message);
+            setShowDmModal(true);
+        }
+
+
+    };
+
+    const handleDirectMessage = async (message: any) => {
+        console.log("🚀 ~ handleDirectMessage ~ message:", message)
+
+        const chatId = rankAddresses(activeAccount as string, message.title);
+
+        let existingChat = await getChatByChatId(chatId);
+
+        if (!existingChat && activeAccount) {
+            await createUserChat(activeAccount as string, chainId as string, chatId, ChatType.Private);
+        }
+
+        setSelectedChat({ chatId });
+        setSection("chat");
+        setShowDmModal(false);
+    };
+
     return (
         <div>
             {isValidChat ?
-                <div className="p-4 bg-gray-800 text-white rounded-lg shadow-lg">
+                <div className="p-4 bg-gray-800 text-white rounded-lg shadow-lg min-h-screen">
                     {chatData.type === "Private" && <h2 className=" flex text-2xl font-bold mb-4">Your chat with &nbsp;  <WalletAddressDisplay address={addressPartner as string} />  </h2>}
-                    {chatData.type === "General" && <h2 className=" flex text-2xl font-bold mb-4">{chatData?.name} </h2>}
-                    <div className="h-64 overflow-y-auto mb-4">
+                    {chatData.type === "General" && <a href={chatData?.url} target="_blank"
+                        rel="noopener noreferrer" className=" flex text-2xl text-blue-600 hover:text-blue-800 mb-4">{chatData?.name} </a>}
+                    <div className=" overflow-y-auto mb-4">
+                        {String(chatData?.url).includes('https://www.youtube.com/') && <iframe
+                            src={chatData?.url}
+                            width="50%"
+                            height="300"
+                            allowFullScreen
+                            title="YouTube Video"
+                            className="mb-2"
+                        />}
                         {chatData?.messages && <MessageList
                             referance={messageListReference}
                             className="message-list text-black"
                             lockable={true}
                             toBottomHeight={"100%"}
                             onRemoveMessageClick={handleRemoveMessage}
+                            onClick={handleMessageClick}
                             dataSource={chatData?.messages.map((msg: any, index: number) => ({
                                 id: index.toString(),
                                 avatar: msg.user.avatar,
                                 position: msg.user.senderAddress === activeAccount ? "right" : "left",
                                 text: msg.message,
                                 title: msg.user.senderAddress === activeAccount ? "You" : msg.user.senderAddress,
-                                atarFlexible: true,
+                                focus: false,
                                 date: msg.date,
-                                type: msg.typeMessage,
-                                dbId: msg.id,
+                                titleColor: "black",
+                                forwarded: false,
+                                replyButton: false,
                                 removeButton: msg.user.senderAddress === activeAccount ? true : false,
-
+                                status: "read",
+                                notch: true,
+                                retracted: false,
+                                type: msg.typeMessage,
+                                // Add onClick handler
                             }))}
                         />}
                     </div>
@@ -128,9 +172,20 @@ const Chat: React.FC<ChatProps> = ({ setSection }) => {
                             message={selectedMessage}
                             onClose={() => setShowRemoveModal(false)}
                             onRemove={(message: any) => {
-                                handleOnRemove(message)
+                                handleOnRemove(message);
                                 setShowRemoveModal(false);
                             }}
+                        />
+                    )}
+                    {showDmModal && (
+                        <DirectMessageModal
+                            message={selectedMessage}
+                            onChat={(message: any) => {
+                                handleDirectMessage(message);
+                                setSelectedChat(message);
+                                setShowDmModal(false);
+                            }}
+                            onClose={() => setShowDmModal(false)}
                         />
                     )}
                 </div> :

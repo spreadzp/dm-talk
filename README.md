@@ -1,11 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Chain Messenger
+
+Chain Messenger is a decentralized messaging application built on Next.js, leveraging the power of blockchain technology to provide secure and private communication channels. The application integrates **Particle Authkit** and **Particle AA SDK** to create account abstraction, enabling seamless interaction with chat members and selected blockchain networks.
+
+## Features
+
+- **Decentralized Messaging**: Secure and private communication channels powered by blockchain technology.
+- **Account Abstraction**: Utilizes Particle Authkit and Particle AA SDK to simplify user interactions with the blockchain.
+- **Multi-Chain Support**: Interact with multiple blockchain networks, including Ethereum, Polygon, and more.
+- **User-Friendly Interface**: Intuitive and responsive design for both desktop and mobile users.
+- **Secure Transactions**: Execute secure transactions with chat members directly within the application.
+- **Customizable Channels**: Create and manage custom chat channels with specific permissions and access controls.
+- **Real-Time Updates**: Real-time messaging and transaction updates for a seamless user experience.
+
+---
 
 ## Getting Started
-https://dm-talk.vercel.app/
 
-First, run the development server:
+Chain Messenger is hosted on:  
+👉 [Live Site](https://dm-talk.vercel.app/)  
+👉 [YouTube Demo](https://youtu.be/GhPiWK-6MZw)
 
-```bash
+### Development Setup
+
+To start working with Chain Messenger, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/spreadzp/dm-talk
+   cd dm-talk
+   ```
+2. Install dependencies:
+```
+npm install
+# or
+yarn install
+```
+3. Run the development server:
+```
 npm run dev
 # or
 yarn dev
@@ -13,93 +44,89 @@ yarn dev
 pnpm dev
 # or
 bun dev
+
 ```
+4. Open http://localhost:3000 with your browser to see the result.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
-
-
-# Particle Auth, Account Abstraction SDK, Next.js, ethers V6 
-
-## Table of contents
-
- 
-Built using:
-
-- **Particle Authkit**
-- **Particle AA SDK**
-- **ethers.js V6.x.x**
-- **TypeScript**
-- **Tailwind CSS**
-
- 
-## 🔑 Particle Auth
-
+## Particle Auth & Account Abstraction SDK
+🔑 ###Particle Auth
 Particle Auth, a component of Particle Network's Wallet-as-a-Service, enables seamless onboarding to an application-embedded MPC-TSS/AA wallet facilitated by social login, such as Google, GitHub, email, phone number, etc.
 
-👉 Learn more about [Particle Auth](https://developers.particle.network/docs/building-with-particle-auth).
+👉 ### Learn more about *[Particle Auth](https://developers.particle.network/docs/building-with-particle-auth)*.
 
-## 🪪 Account Abstraction SDK
-
+🪪 Account Abstraction SDK
 Particle Network natively supports and facilitates the end-to-end utilization of ERC-4337 account abstraction. This is primarily done through the account abstraction SDK, which can construct, sponsor, and send UserOperations, deploy smart accounts, retrieve fee quotes, and perform other vital functions.
 
-> Every gasless transaction is automatically sponsored on testnet. On mainnet, you'll need to deposit USDT into Paymaster.
+👉 Learn more about the *[Particle AA SDK](https://developers.particle.network/docs/aa-web-quickstart)*.
 
-👉 Learn more about the [Particle AA SDK](https://developers.particle.network/docs/aa-web-quickstart).
-
-***
-
-👉 Learn more about [Particle Network](https://particle.network).
-
-## 🛠️ Quickstart
-
-### Clone this repository
-```
-git clone https://github.com/Particle-Network/kakarot-auth-aa-demo.git
-```
+##  
+Here is your README.md for Chain Messenger:
  
+# Chain Messenger
 
-### Set environment variables
-This project requires several keys from Particle Network to be defined in `.env`. The following should be defined:
-- `NEXT_PUBLIC_PROJECT_ID`, the ID of the corresponding application in your [Particle Network dashboard](https://dashboard.particle.network/#/applications).
-- `NEXT_PUBLIC_CLIENT_KEY`, the ID of the corresponding project in your [Particle Network dashboard](https://dashboard.particle.network/#/applications).
--  `NEXT_PUBLIC_APP_ID`, the client key of the corresponding project in your [Particle Network dashboard](https://dashboard.particle.network/#/applications).
+Chain Messenger is a decentralized messaging application built on Next.js, leveraging the power of blockchain technology to provide secure and private communication channels. The application integrates **Particle Authkit** and **Particle AA SDK** to create account abstraction, enabling seamless interaction with chat members and selected blockchain networks.
 
-### Start the project
-```sh
-npm run dev
+## Features
+
+- **Decentralized Messaging**: Secure and private communication channels powered by blockchain technology.
+- **Account Abstraction**: Utilizes Particle Authkit and Particle AA SDK to simplify user interactions with the blockchain.
+- **Multi-Chain Support**: Interact with multiple blockchain networks, including Ethereum, Polygon, and more.
+- **User-Friendly Interface**: Intuitive and responsive design for both desktop and mobile users.
+- **Secure Transactions**: Execute secure transactions with chat members directly within the application.
+- **Customizable Channels**: Create and manage custom chat channels with specific permissions and access controls.
+- **Real-Time Updates**: Real-time messaging and transaction updates for a seamless user experience.
+
+---
+
+## Getting Started
+
+Chain Messenger is hosted on:  
+👉 [Live Site](https://dm-talk.vercel.app/)  
+👉 [YouTube Demo](https://youtu.be/GhPiWK-6MZw)
+[demo.webm](https://github.com/user-attachments/assets/e3843be4-72bb-4773-82b3-41a08335af7f)
+
+### Development Setup
+
+To start working with Chain Messenger, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/spreadzp/dm-talk
+   cd dm-talk
+   ```
+2. Install dependencies:
+``` 
+  npm install
+  # or
+  yarn install
+```
+3. Run the development server:
+ ```
+  npm run dev
+  # or
+  yarn dev
+  # or
+  pnpm dev
+  # or
+  bun dev
 ```
 
-Or
+Open *http://localhost:3000* with your browser to see the result.
 
-```sh
-yarn dev
-```
- 
-### Config social logins
+## Particle Auth & Account Abstraction SDK
+🔑 Particle Auth
+Particle Auth, a component of Particle Network's Wallet-as-a-Service, enables seamless onboarding to an application-embedded MPC-TSS/AA wallet facilitated by social login, such as Google, GitHub, email, phone number, etc.
 
-List of available social logins:
+👉 Learn more about Particle Auth.
 
+🪪 Account Abstraction SDK
+Particle Network natively supports and facilitates the end-to-end utilization of ERC-4337 account abstraction. This is primarily done through the account abstraction SDK, which can construct, sponsor, and send UserOperations, deploy smart accounts, retrieve fee quotes, and perform other vital functions.
+
+👉 Learn more about the Particle AA SDK.
+
+## Social Logins Setup
+
+Particle Auth supports a wide range of social logins:
 ```sh
 {
   email: 'email',
@@ -116,27 +143,20 @@ List of available social logins:
   jwt: 'jwt'
 }
 ```
+## Environment Variables
 
-### AA options
+This project requires several keys from Particle Network to be defined in the .env file to see sample.env:
 
-You can configure the smart account using the `aaOptions` object in `src/app/page.tsx`.
+- NEXT_PUBLIC_PROJECT_ID
+- NEXT_PUBLIC_CLIENT_KEY
+- NEXT_PUBLIC_APP_ID
 
----
+You can get these keys from your *[Particle Network Dashboard](https://dashboard.particle.network/#/applications)*.
 
-- **BICONOMY**, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
-  - `version`, either `1.0.0` or `2.0.0`; both versions of Biconomy's smart account implementation are supported.
-  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
-- **CYBERCONNECT**, a [CyberConnect smart account](https://wallet.cyber.co/).
-  - `version`, currently only `1.0.0` is supported for `CYBERCONNECT`.
-  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
-- **SIMPLE**, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
-  - `version`, either `1.0.0` or `2.0.0` is supported for `SIMPLE`.
-  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
-- **LIGHT**, a [Light Account implementation by Alchemy](https://github.com/alchemyplatform/light-account).
-  - `version`, currently only `1.0.2` is supported for `LIGHT`.
-  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
-- **XTERIO**, a [Xterio smart account](https://xter.io/build).
-  - `version`, currently only `1.0.0` is supported for `XTERIO`.
-  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
+## License
+This project is licensed under the MIT License.
 
----
+### Explore the project:
+- [GitHub Repository](https://github.com/spreadzp/dm-talk)
+- [Live Site](https://dm-talk.vercel.app/) 
+- [YouTube Demo](https://youtu.be/GhPiWK-6MZw)

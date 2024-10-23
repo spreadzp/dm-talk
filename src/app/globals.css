@@ -32,11 +32,7 @@ body {
   }
 }
 
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-  }
-}
+
 
 .item-nftId {
   margin-left: 10px;
@@ -147,6 +143,18 @@ body {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .landing {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2em;
+  }
+
   .poster-content {
       padding: 10px;
   }
@@ -167,9 +175,31 @@ body {
   .text-base {
       font-size: 1rem;
   }
+  .collaboration {
+    padding: 10px;
+  }
+
+  .collaboration-left,
+  .collaboration-right {
+    flex: 1 1 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .collaboration-form input,
+  .collaboration-form textarea {
+    padding: 8px;
+  }
+
+  .collaboration-form button {
+    padding: 8px;
+  }
+  .statistic {
+    padding: 10px;
+  }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
   .poster-content {
       flex-direction: row;
       justify-content: space-between;
@@ -273,7 +303,11 @@ body {
 }
 
 /* Responsive styles */
-@media (min-width: 768px) {
+@media (min-width: 768px) { 
+  .container {
+    flex-direction: row;
+  } 
+
   .collaboration {
     flex-direction: row;
   }
@@ -287,7 +321,29 @@ body {
   .collaboration-right {
     flex: 0 0 30%;
   }
+
+  .poster-content {
+    padding: 10px;
+  }
+
+  .poster-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .poster-description {
+    margin-top: 10px;
+  }
+
+  .text-xl {
+    font-size: 1.25rem;
+  }
+
+  .text-base {
+    font-size: 1rem;
+  }
 }
+
 .banner {
   background-color: var(--primary);
   color: var(--white);

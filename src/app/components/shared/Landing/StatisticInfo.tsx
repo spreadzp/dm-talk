@@ -37,7 +37,7 @@ export const StatisticInfo = () => {
                             titleSize={TitleSize.H4}
                             titleEffect={TitleEffect.Gradient}
                         />
-                        <Table data={[stat]} onJoinClick={() => handleJoinClick(stat.typeChat === "Private" ? "your channels" : "general chats")} buttonLabel="Join" />
+                        <Table data={[stat]} onJoinClick={() => handleJoinClick(stat.type === "Private" ? "your channels" : "general chats")} buttonLabel="Join" />
                     </div>
                 ))}
             </div>

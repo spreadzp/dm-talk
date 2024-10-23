@@ -8,8 +8,8 @@ const inter = Inter({ subsets: ["latin"] });
 import { ParticleAuthkit } from "./components/shared/AuthKit";
 
 export const metadata: Metadata = {
-  title: "Particle Auth app",
-  description: "App leveraging Particle Auth for social logins.",
+  title: "Chain Messenger",
+  description: "Chain Messenger is a decentralized communication platform designed to facilitate secure, private, and efficient messaging.",
 };
 
 export default function RootLayout({
