@@ -2,6 +2,7 @@
   "name": "chain-messenger",
   "version": "0.1.0",
   "private": true,
+  "license":"MIT",
   "scripts": {
     "dev": "next dev",
     "build": "npm run db-generate && next build",

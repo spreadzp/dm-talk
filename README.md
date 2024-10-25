@@ -83,7 +83,7 @@ Chain Messenger is a decentralized messaging application built on Next.js, lever
 Chain Messenger is hosted on:  
 👉 [Live Site](https://dm-talk.vercel.app/)  
 👉 [YouTube Demo](https://youtu.be/GhPiWK-6MZw)
-[demo.webm](https://github.com/user-attachments/assets/e3843be4-72bb-4773-82b3-41a08335af7f)
+![demo.webm](https://github.com/user-attachments/assets/e3843be4-72bb-4773-82b3-41a08335af7f)
 
 ### Development Setup
 
